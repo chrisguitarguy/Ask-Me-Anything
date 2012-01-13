@@ -7,9 +7,9 @@ try:
 except ImportError:
     import json
 
-from messenger import app
+from app import application
 
-@app.route('/')
+@application.route('/')
 def home():
     total = g.redis.get('question_counter')
     if total is not None:
@@ -21,7 +21,7 @@ def home():
     return render_template('home.html', questions=questions)
 
 
-@app.route('/listen')
+@application.route('/listen')
 def listen():
     questions = session.get('messages')
     if questions is not None and isinstance(questions, list):
@@ -34,7 +34,7 @@ def listen():
     return render_template('listen.html', questions=rv)
 
 
-@app.route('/question/<int:id>')
+@application.route('/question/<int:id>')
 def question(id):
     question = g.redis.get('message:{}'.format(id))
     resp_count = g.redis.get('response:{}:count'.format(id))
@@ -59,7 +59,7 @@ def question(id):
                           id=id, question=question, responses=responses)
    
     
-@app.route('/add-question', methods=['POST'])
+@application.route('/add-question', methods=['POST'])
 def add_message():
     try:
         token, uses = session.get('csrf', '').split(':', 1)
@@ -93,7 +93,7 @@ def add_message():
     return redirect(url_for('listen'))
 
 
-@app.route('/add-response', methods=['POST'])
+@application.route('/add-response', methods=['POST'])
 def add_response():
     try:
         token, uses = session.get('csrf', '').split(':', 1)

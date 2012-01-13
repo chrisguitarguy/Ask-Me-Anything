@@ -6,10 +6,10 @@ from werkzeug.security import gen_salt
 
 templatedir = os.path.join(os.path.dirname(__file__), 'templates')
 
-app = Flask(__name__, template_folder=templatedir)
-app.config.from_pyfile('config.py')
+application = Flask(__name__, template_folder=templatedir)
+application.config.from_pyfile('config.py')
 
-@app.before_request
+@application.before_request
 def connect_redis():
     if 'csrf' not in session:
         session['csrf'] = '{}:0'.format(gen_salt(12))
@@ -24,4 +24,4 @@ def connect_redis():
                 session['csrf'] = '{}:0'.format(gen_salt(12))
     g.redis = redis.Redis()
 
-import messenger.views
+import app.views
