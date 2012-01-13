@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block seo_title %}Ask Questions Anonymously{% endblock %}
+
+
+{% block headline %}
+<h1>Ask a Question</h1>
+{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('add_message') }}" method="POST">
+    <div class="clearfix">
+        <textarea rows="7" name="your-question" id="your-question"></textarea>
+    </div>
+    <div class="clearfix askbtn-container">
+        <input type="submit" class="btn large success" value="Ask" />
+    </div>
+    <input type="hidden" name="_token" value="{{ session.get('csrf', '') }}" />
+</form>
+
+<div id="questions">
+    <h2>Questions</h2>
+    {% if questions %}
+        {% for question in questions %}
+            {% if question %}
+                <blockquote id="question-{{ loop.index }}">
+                    <p>{{ question }}</p>
+                    <small class="pull-right"><a href="{{ url_for('question', id=loop.index) }}">Answer</a></small>
+                </blockquote>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No one has asked anything yet!</p>
+    {% endif %}
+</div>
+{% endblock %}

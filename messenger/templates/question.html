@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block seo_title %}Question{% endblock %}
+
+{% block headline %}<h1>Question #{{ id }}</h1>{% endblock %}
+
+{% block content %}
+    <div class="answers">
+        <blockquote>
+            <p>{{ question }}</p>
+        </blockquote>
+        <h2>Answer</h2>
+        <form action="{{ url_for('add_response') }}" method="POST">
+            <input type="hidden" value="{{ id }}" name="question" />
+            <input type="hidden" value="{{ session.get('csrf', '') }}" name="_token" />
+            <div class="clearfix">
+                <textarea name="your-answer" rows="7" style="width:100%"></textarea>
+            </div>
+            <div class="clearfix askbtn-container">
+                <input type="submit" class="btn large success" value="Answer" />
+            </div>
+        </form>
+        <h2>Other Answers</h2>
+        {% if responses %}
+            {% for r in responses %}
+                {% if r %}
+                    <p id="response-{{ loop.index }}" class="response">{{ r }} <a href="{{ url_for('question', id=id) }}#response-{{ loop.index}}">#</a></p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p style="text-align:center">No responses. (Yet.)</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block seo_title %}Wait for the Answers{% endblock %}
+
+{% block headline %}
+<h1>Your Answers</h1>
+{% endblock %}
+
+{% block content %}
+<div class="answers listen">
+    {% for id, q in questions %}
+        {% if q %}
+            <h4>{{ q }}</h4>
+            <div id="response-container-{{ id }}" class="response-container" rel="{{ id }}"> </div>
+        {% endif %}
+    {% else %}
+        <h2>No questions yet, better <a href="{{ url_for('home') }}">ask one</a>.</h2>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block footer_extra %}
+<script type="text/javascript">
+    var user = {
+        token: "{{ session.get('csrf', '') }}",
+        questions: [{% for q in session['messages'] %}"{{ q }}"{% if not loop.last %},{% endif %}{% endfor %}],
+    }
+</script>
+<script type="text/javascript" src="/js/fetch.js"></script>
+{% endblock %}

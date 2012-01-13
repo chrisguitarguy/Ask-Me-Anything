@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html language="en-US" dir="ltr">
+<head>
+    <title>{% block seo_title %}{% endblock %} | Ask Me Anything</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="container">
+                <a href="{{ url_for('home') }}"class="brand">Ask Me Anything</a>
+                <ul class="nav">
+                    <li><a href="{{ url_for('listen') }}">Your Answers</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <div id="main">
+        <div class="container">
+            {% block headline %}{% endblock %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert-message {{ category }}" data-alert="data-alert">
+                            <a class="close" href="#">×</a>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p>A <a href="https://github.com/chrisguitarguy">Christopher Davis</a> thing.</p>
+        </div>
+    </footer>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-alerts.js"></script>
+{% block footer_extra %}{% endblock %}
+</body>
+
+</html>
